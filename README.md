@@ -14,15 +14,57 @@ A Windows desktop app for the staff of an escape room business: manage the theme
 | **Leaderboard** | Customers ranked by how much they have spent on paid bookings, with search |
 | **Reports** | Revenue and booking counts (paid, pending, cancelled) for a chosen date range, with a booking list |
 
-## Database
-
-Three tables in `EscapeRoomDB`:
-
-- **Staff:** full name, username, password, role, active flag
-- **Rooms:** name, theme, difficulty, capacity, price per session, availability
-- **Bookings:** room, customer name and phone, date, group size, payment status, total price (each booking belongs to one room)
-
 `database-setup.sql` creates the database and the tables, and fills them with 20 sample rooms and 10 sample bookings.
+
+## How the screens connect
+
+```mermaid
+flowchart LR
+    L["Login"] -->|signed in| D["Dashboard"]
+    D --> R["Rooms"]
+    D --> B["Bookings"]
+    D --> F["Filter"]
+    D --> LB["Leaderboard"]
+    D --> RP["Reports"]
+    R & B & F & LB & RP -->|Back| D
+    D -->|Log out| L
+```
+
+## Database design
+
+```mermaid
+erDiagram
+    ROOMS ||--o{ BOOKINGS : "is booked in"
+    ROOMS {
+        int RoomID PK
+        nvarchar RoomName
+        nvarchar Theme
+        nvarchar Difficulty
+        int Capacity
+        decimal PricePerSession
+        bit IsAvailable
+    }
+    BOOKINGS {
+        int BookingID PK
+        int RoomID FK
+        nvarchar CustomerName
+        nvarchar CustomerPhone
+        datetime BookingDate
+        int GroupSize
+        nvarchar PaymentStatus
+        decimal TotalPrice
+    }
+    STAFF {
+        int StaffID PK
+        nvarchar FullName
+        nvarchar Username
+        nvarchar Password
+        nvarchar Role
+        bit IsActive
+    }
+```
+
+`STAFF` is used only for signing in. Each booking belongs to one room; a room can have many bookings.
 
 ## Run it
 
