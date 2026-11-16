@@ -11,6 +11,7 @@ namespace EscapeRoomMS.Forms
         public LeaderboardForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         private void LeaderboardForm_Load(

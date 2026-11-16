@@ -13,6 +13,7 @@ namespace EscapeRoomMS.Forms
         public RoomsForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         private void RoomsForm_Load(
@@ -419,22 +420,26 @@ namespace EscapeRoomMS.Forms
                 return false;
             }
 
+            int capacity;
             if (!int.TryParse(
                 txtCapacity.Text,
-                out _))
+                out capacity)
+                || capacity < 1)
             {
                 MessageBox.Show(
-                    "Capacity must be a number.");
+                    "Capacity must be a whole number of at least 1.");
 
                 return false;
             }
 
+            decimal price;
             if (!decimal.TryParse(
                 txtPrice.Text,
-                out _))
+                out price)
+                || price <= 0)
             {
                 MessageBox.Show(
-                    "Price must be a number.");
+                    "Price must be a number greater than 0.");
 
                 return false;
             }

@@ -12,6 +12,7 @@ namespace EscapeRoomMS.Forms
         public FilterForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         private void FilterForm_Load(object sender, EventArgs e)

@@ -12,6 +12,7 @@ namespace EscapeRoomMS.Forms
         public DashboardForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
 
@@ -40,40 +41,7 @@ namespace EscapeRoomMS.Forms
                     DatabaseHelper
                     .ExecuteQuery(query);
 
-                dgvRecentBookings
-                    .BackgroundColor =
-                    Color.FromArgb(
-                        28, 28, 55);
-
-                dgvRecentBookings
-                    .DefaultCellStyle
-                    .BackColor =
-                    Color.FromArgb(
-                        28, 28, 55);
-
-                dgvRecentBookings
-                    .DefaultCellStyle
-                    .ForeColor =
-                    Color.White;
-
-                dgvRecentBookings
-                    .ColumnHeadersDefaultCellStyle
-                    .BackColor =
-                    Color.FromArgb(
-                        46, 204, 113);
-
-                dgvRecentBookings
-                    .ColumnHeadersDefaultCellStyle
-                    .ForeColor =
-                    Color.White;
-
-                dgvRecentBookings
-                    .EnableHeadersVisualStyles =
-                    false;
-
-                dgvRecentBookings
-                    .GridColor =
-                    Color.Gray;
+                // Grid colours come from Theme.Apply.
             }
             catch (Exception ex)
             {

@@ -1,6 +1,6 @@
 # Escape Room Management System
 
-A Windows desktop app for the staff of an escape room business: manage the themed rooms, take bookings, filter them, and see revenue reports and a customer leaderboard. Built with C# Windows Forms and SQL Server.
+A Windows desktop app for the staff of an escape room business: manage the themed rooms, take bookings, filter them, and see revenue reports and a customer leaderboard. Built with C# Windows Forms and SQL Server by Hussein Hany, from the database design to the screens.
 
 ## Screens
 
@@ -37,12 +37,20 @@ You need Windows, Visual Studio 2022 or later with the ".NET desktop development
 
 C# · .NET Framework 4.7.2 · Windows Forms · SQL Server · ADO.NET (`System.Data.SqlClient`)
 
+## Project layout
+
+| Path | What it holds |
+| --- | --- |
+| `Forms/` | One folder entry per screen: the logic (`*.cs`) and the generated layout (`*.Designer.cs`, `*.resx`) |
+| `Database/DatabaseHelper.cs` | The connection and the query helpers every screen uses |
+| `Theme.cs` | The shared look: colours, rounded bordered buttons with hover and press states, grid styling |
+| `database-setup.sql` | Creates the database, the tables and the sample data |
+
 ## Notes
 
-- Searches and filters use SQL parameters, so names with an apostrophe (such as "Pharaoh's Tomb") work.
-- Passwords are stored as plain text, as in the original coursework; a real deployment would hash them. The team members' accounts in the setup script use the placeholder password `ChangeMe1`.
-- An earlier, partial version of this project (four source files and a written report) is in this repository's history.
-
-## Team
-
-Hussein Hany, Ahmed Walid, Eslam Mohamed, Begad Sherif.
+- **One theme for every screen.** `Theme.cs` gives all screens the same navy palette; buttons are rounded with a border that brightens on hover and darkens when pressed, colour-coded by role (green for main actions, amber for edits, red for delete and log out, grey for back and clear). Grids and panels are double-buffered, so they redraw without flicker.
+- **Input checks.** A booking needs a group of at least one person and no larger than the room's capacity; a room needs a capacity of at least one and a price above zero.
+- **Pricing.** Rooms are priced per session. The bookings screen shows the session price, which is the amount saved with the booking.
+- **Safe queries.** Searches and filters use SQL parameters, so names with an apostrophe (such as "Pharaoh's Tomb") work.
+- **Passwords** are stored as plain text, as in the original coursework; a real deployment would hash them. The extra staff accounts in the setup script use the placeholder password `ChangeMe1`.
+- An earlier, partial version of this project is in this repository's history.

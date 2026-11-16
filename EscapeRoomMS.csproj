@@ -199,6 +199,7 @@
       <DependentUpon>RoomsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Theme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\BookingsForm.resx">
       <DependentUpon>BookingsForm.cs</DependentUpon>

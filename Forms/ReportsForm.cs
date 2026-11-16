@@ -10,6 +10,7 @@ namespace EscapeRoomMS.Forms
         public ReportsForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         private void ReportsForm_Load(

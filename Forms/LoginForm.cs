@@ -15,6 +15,7 @@ namespace EscapeRoomMS.Forms
         public LoginForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         // Load

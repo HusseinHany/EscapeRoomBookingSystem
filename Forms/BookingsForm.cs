@@ -11,10 +11,12 @@ namespace EscapeRoomMS.Forms
     {
         private int selectedBookingID = -1;
         private decimal selectedRoomPrice = 0;
+        private int selectedRoomCapacity = 0;
 
         public BookingsForm()
         {
             InitializeComponent();
+            EscapeRoomMS.Theme.Apply(this);
         }
 
         private void BookingsForm_Load(
@@ -85,17 +87,29 @@ namespace EscapeRoomMS.Forms
                     return;
 
                 string query =
-                    @"SELECT PricePerSession
+                    @"SELECT PricePerSession, Capacity
                       FROM Rooms
-                      WHERE RoomID = "
-                      + cmbRoom.SelectedValue;
+                      WHERE RoomID = @RoomID";
 
-                object price =
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter(
+                        "@RoomID",
+                        cmbRoom.SelectedValue)
+                };
+
+                DataTable room =
                     DatabaseHelper
-                    .ExecuteScalar(query);
+                    .ExecuteQuery(query, parameters);
+
+                if (room.Rows.Count == 0)
+                    return;
 
                 selectedRoomPrice =
-                    Convert.ToDecimal(price);
+                    Convert.ToDecimal(room.Rows[0]["PricePerSession"]);
+
+                selectedRoomCapacity =
+                    Convert.ToInt32(room.Rows[0]["Capacity"]);
 
                 lblTotalPrice.Text =
                     "EGP "
@@ -410,12 +424,31 @@ namespace EscapeRoomMS.Forms
                 return false;
             }
 
+            int groupSize;
             if (!int.TryParse(
                 txtGroupSize.Text,
-                out _))
+                out groupSize)
+                || groupSize < 1)
             {
                 MessageBox.Show(
-                    "Invalid group size.");
+                    "Group size must be a whole number of at least 1.");
+                return false;
+            }
+
+            if (cmbRoom.SelectedValue == null)
+            {
+                MessageBox.Show(
+                    "Choose a room.");
+                return false;
+            }
+
+            if (selectedRoomCapacity > 0
+                && groupSize > selectedRoomCapacity)
+            {
+                MessageBox.Show(
+                    "This room holds at most "
+                    + selectedRoomCapacity
+                    + " people.");
                 return false;
             }
 
@@ -427,22 +460,10 @@ namespace EscapeRoomMS.Forms
     object sender,
     EventArgs e)
         {
-            if (int.TryParse(
-                txtGroupSize.Text,
-                out int groupSize))
-            {
-                decimal total =
-                    selectedRoomPrice
-                    * groupSize;
-
-                lblTotalPrice.Text =
-                    "EGP " + total;
-            }
-            else
-            {
-                lblTotalPrice.Text =
-                    "EGP 0";
-            }
+            // Rooms are priced per session, whatever the group size, and
+            // that is the amount saved with the booking.
+            lblTotalPrice.Text =
+                "EGP " + selectedRoomPrice;
         }
 
 
