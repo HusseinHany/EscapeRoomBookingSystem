@@ -27,7 +27,7 @@ flowchart LR
     D --> LB["Leaderboard"]
     D --> RP["Reports"]
     R & B & F & LB & RP -->|Back| D
-    D -->|Log out| L
+    D -->|Log out| X(["App closes"])
 ```
 
 ## Database design
