@@ -1,44 +1,48 @@
-# Escape Room Booking System
+# Escape Room Management System
 
-A Windows Forms application in C# for staff at an escape room facility: manage themed rooms, take bookings, and stop a room being booked twice for the same slot. Data is stored in SQL Server.
+A Windows desktop app for the staff of an escape room business: manage the themed rooms, take bookings, filter them, and see revenue reports and a customer leaderboard. Built with C# Windows Forms and SQL Server.
 
-## What's in this repository
+## Screens
 
-This repository holds part of the project's source, not the whole solution:
-
-| File | What it is |
+| Screen | What staff can do |
 | --- | --- |
-| `RoomsForm.cs` | The rooms screen: list all rooms, add, edit, delete, toggle availability |
-| `AddEditRoomDialog.cs` | Dialog for adding or editing a room, with input validation |
-| `Booking.cs` | The booking model (room, customer, phone, date, group size, payment status) |
-| `ProjectReport.cs` | The written project report: problem statement, database design, forms, OOP analysis, testing notes |
+| **Login** | Sign in with a staff account; the password can be shown or hidden |
+| **Dashboard** | Today's bookings, today's revenue, available rooms, the most recent bookings, and a live clock; buttons to every other screen |
+| **Rooms** | Add, edit and delete rooms (name, theme, difficulty, capacity, price per session, availability), with a live search by name |
+| **Bookings** | Add, edit and delete bookings; the price is filled in from the room and the group size; live search by customer name |
+| **Filter** | Find bookings by customer name, room, payment status and date range |
+| **Leaderboard** | Customers ranked by how much they have spent on paid bookings, with search |
+| **Reports** | Revenue and booking counts (paid, pending, cancelled) for a chosen date range, with a booking list |
 
-The login, dashboard, bookings, filter and leaderboard forms, the `DatabaseHelper`, `Room`, `RoomManager` and `BookingManager` classes, and the Visual Studio project files are described in the report but are not in this repository, so it does not build as it stands.
+## Database
 
-## Design, from the project report
+Three tables in `EscapeRoomDB`:
 
-**Database**
+- **Staff:** full name, username, password, role, active flag
+- **Rooms:** name, theme, difficulty, capacity, price per session, availability
+- **Bookings:** room, customer name and phone, date, group size, payment status, total price (each booking belongs to one room)
 
-- `Rooms`: name (unique), theme, difficulty 1-5, capacity, price, availability
-- `Bookings`: room, customer name, phone, booking date, group size, payment status, completion time
-- One room has many bookings
+`database-setup.sql` creates the database and the tables, and fills them with 20 sample rooms and 10 sample bookings.
 
-**Screens**
+## Run it
 
-1. Login
-2. Dashboard: today's bookings, today's revenue, room availability, recent bookings
-3. Rooms: add, edit, delete, mark as unavailable
-4. Bookings: add, edit, delete, with double-booking and capacity checks
-5. Filter and search: by room, date range, payment status and customer name
-6. Leaderboard: top five fastest escape times per room
+You need Windows, Visual Studio 2022 or later with the ".NET desktop development" workload, and SQL Server (Express or LocalDB is fine).
 
-**Rules the system enforces**
-
-- A room cannot be booked twice for the same date
-- Group size cannot exceed the room's capacity
-- Room names are unique; capacity and price must be greater than zero
-- All SQL is parameterized
+1. Open `database-setup.sql` in SQL Server Management Studio and run the whole script.
+2. Open `EscapeRoomMS.slnx` in Visual Studio. NuGet restores the packages on the first build.
+3. If your SQL Server is not the default instance, change `Data Source` in `Database/DatabaseHelper.cs` (for example `.\SQLEXPRESS` or `(localdb)\MSSQLLocalDB`).
+4. Press F5 and sign in with the demo account **admin / admin123**.
 
 ## Built with
 
-C#, Windows Forms, SQL Server (`SqlConnection`).
+C# · .NET Framework 4.7.2 · Windows Forms · SQL Server · ADO.NET (`System.Data.SqlClient`)
+
+## Notes
+
+- Searches and filters use SQL parameters, so names with an apostrophe (such as "Pharaoh's Tomb") work.
+- Passwords are stored as plain text, as in the original coursework; a real deployment would hash them. The team members' accounts in the setup script use the placeholder password `ChangeMe1`.
+- An earlier, partial version of this project (four source files and a written report) is in this repository's history.
+
+## Team
+
+Hussein Hany, Ahmed Walid, Eslam Mohamed, Begad Sherif.
