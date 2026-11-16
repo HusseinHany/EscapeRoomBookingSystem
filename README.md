@@ -1,5 +1,9 @@
 # Escape Room Management System
 
+<p align="center">
+  <a href="https://husseinhany.github.io/#projects"><img src="docs/banner.svg" width="100%" alt="Escape Room Management System: a glowing keyhole in a door and a golden key."></a>
+</p>
+
 A Windows desktop app for the staff of an escape room business: manage the themed rooms, take bookings, filter them, and see revenue reports and a customer leaderboard. Built with C# Windows Forms and SQL Server by Hussein Hany, from the database design to the screens.
 
 ## Screens
