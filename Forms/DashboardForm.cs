@@ -78,26 +78,32 @@ namespace EscapeRoomMS.Forms
                     todayBookings?.ToString()
                     ?? "0";
 
+                // Money actually taken today: paid bookings dated today.
                 object revenue =
                     DatabaseHelper.ExecuteScalar(
-                        @"SELECT ISNULL(
-                            SUM(PricePerSession),0)
-                          FROM Rooms");
+                        @"SELECT ISNULL(SUM(TotalPrice), 0)
+                          FROM Bookings
+                          WHERE PaymentStatus = 'Paid'
+                            AND CAST(BookingDate AS DATE)
+                                = CAST(GETDATE() AS DATE)");
 
                 lblRevenue.Text =
                     "EGP "
-                    + revenue?.ToString();
+                    + Convert.ToDecimal(revenue).ToString("N0");
 
+                // Paid bookings over the last 7 days, today included.
                 object weeklyRevenue =
                     DatabaseHelper.ExecuteScalar(
-                        @"SELECT ISNULL(
-                            SUM(PricePerSession),0)
-                          FROM Rooms
-                          WHERE IsAvailable = 1");
+                        @"SELECT ISNULL(SUM(TotalPrice), 0)
+                          FROM Bookings
+                          WHERE PaymentStatus = 'Paid'
+                            AND CAST(BookingDate AS DATE)
+                                BETWEEN CAST(DATEADD(DAY, -6, GETDATE()) AS DATE)
+                                    AND CAST(GETDATE() AS DATE)");
 
                 lblWeeklyRevenue.Text =
                     "EGP "
-                    + weeklyRevenue?.ToString();
+                    + Convert.ToDecimal(weeklyRevenue).ToString("N0");
 
                 object availableRooms =
                     DatabaseHelper.ExecuteScalar(
